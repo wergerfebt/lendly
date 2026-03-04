@@ -6,9 +6,10 @@ const express      = require('express');
 const cookieParser = require('cookie-parser');
 const cors         = require('cors');
 
-const authRouter   = require('./routes/auth');
-const usersRouter  = require('./routes/users');
-const storesRouter = require('./routes/stores');
+const authRouter     = require('./routes/auth');
+const usersRouter    = require('./routes/users');
+const storesRouter   = require('./routes/stores');
+const listingsRouter = require('./routes/listings');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -26,9 +27,10 @@ app.use(cors({
 
 // ── Routes ────────────────────────────────────────────────────────
 
-app.use('/api/auth',   authRouter);
-app.use('/api/users',  usersRouter);
-app.use('/api/stores', storesRouter);
+app.use('/api/auth',     authRouter);
+app.use('/api/users',    usersRouter);
+app.use('/api/stores',   storesRouter);
+app.use('/api/listings', listingsRouter);
 
 // Health check — useful for Docker and load-balancer probes
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));

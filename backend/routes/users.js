@@ -5,6 +5,7 @@ const authenticate       = require('../middleware/authenticate');
 const validate           = require('../middleware/validate');
 const { updateUserRules } = require('../validators/userValidators');
 const ctrl               = require('../controllers/userController');
+const listingCtrl        = require('../controllers/listingController');
 
 const router = Router();
 
@@ -20,5 +21,18 @@ router.put('/me',          authenticate, updateUserRules, validate, ctrl.updateM
 
 // GET  /api/users/:id         — public profile of any user
 router.get('/:id',         ctrl.getUserById);
+
+// GET  /api/users/:id/listings — public listings for a user
+// (owner sees draft+paused too when authenticated as themselves)
+router.get('/:id/listings',
+  (req, res, next) => {
+    const auth = req.headers.authorization;
+    if (auth && auth.startsWith('Bearer ')) {
+      return authenticate(req, res, next);
+    }
+    next();
+  },
+  listingCtrl.getUserListings
+);
 
 module.exports = router;

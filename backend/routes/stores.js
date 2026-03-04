@@ -7,6 +7,7 @@ const authorizeStore    = require('../middleware/authorizeStore');
 const validate          = require('../middleware/validate');
 const { createStoreRules, updateStoreRules } = require('../validators/storeValidators');
 const ctrl              = require('../controllers/storeController');
+const listingCtrl       = require('../controllers/listingController');
 
 const router = Router();
 
@@ -77,6 +78,21 @@ router.put('/:id/staff/:userId',
 router.delete('/:id/staff/:userId',
   authenticate,
   ctrl.removeStoreStaff
+);
+
+// ── Store listings ────────────────────────────────────────────────
+
+// GET /api/stores/:id/listings  — public (store members see more statuses)
+router.get('/:id/listings',
+  (req, res, next) => {
+    // Attach user if token present; auth is optional on this route
+    const auth = req.headers.authorization;
+    if (auth && auth.startsWith('Bearer ')) {
+      return authenticate(req, res, next);
+    }
+    next();
+  },
+  listingCtrl.getStoreListings
 );
 
 module.exports = router;
