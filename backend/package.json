@@ -1,0 +1,20 @@
+{
+  "name": "lendly-backend",
+  "version": "0.1.0",
+  "description": "Lendly peer-to-peer equipment rental marketplace — backend",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "migrate":    "node scripts/migrate.js",
+    "db:start":   "docker-compose up -d",
+    "db:stop":    "docker-compose down",
+    "db:reset":   "docker-compose down -v && docker-compose up -d",
+    "db:psql":    "docker exec -it lendly_postgres psql -U lendly -d lendly_dev",
+    "db:verify":  "docker exec lendly_postgres psql -U lendly -d lendly_dev -c \"SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;\""
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pg":     "^8.12.0"
+  }
+}
