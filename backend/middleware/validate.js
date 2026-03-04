@@ -9,24 +9,26 @@ const { validationResult } = require('express-validator');
  * If any validator failed it returns 400 with structured field-level errors:
  *
  *   {
- *     errors: [
- *       { field: "email",    message: "Must be a valid email address" },
- *       { field: "password", message: "Must be at least 8 characters" }
- *     ]
+ *     error: "Validation failed",
+ *     fields: {
+ *       "email":    "Must be a valid email address",
+ *       "password": "Must be at least 8 characters"
+ *     }
  *   }
  *
- * If validation passes, calls next() to continue to the controller.
+ * Only the first error per field is reported. If validation passes, calls next().
  */
 function validate(req, res, next) {
   const result = validationResult(req);
   if (result.isEmpty()) return next();
 
-  const errors = result.array().map(e => ({
-    field:   e.path,
-    message: e.msg,
-  }));
+  // Collect first error message per field
+  const fields = {};
+  for (const e of result.array()) {
+    if (!fields[e.path]) fields[e.path] = e.msg;
+  }
 
-  return res.status(400).json({ errors });
+  return res.status(400).json({ error: 'Validation failed', fields });
 }
 
 module.exports = validate;
