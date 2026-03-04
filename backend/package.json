@@ -1,20 +1,30 @@
 {
   "name": "lendly-backend",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lendly peer-to-peer equipment rental marketplace — backend",
   "engines": {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "migrate":    "node scripts/migrate.js",
-    "db:start":   "docker-compose up -d",
-    "db:stop":    "docker-compose down",
-    "db:reset":   "docker-compose down -v && docker-compose up -d",
-    "db:psql":    "docker exec -it lendly_postgres psql -U lendly -d lendly_dev",
-    "db:verify":  "docker exec lendly_postgres psql -U lendly -d lendly_dev -c \"SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;\""
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate": "node scripts/migrate.js",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
+    "db:reset": "docker-compose down -v && docker-compose up -d",
+    "db:psql": "docker exec -it lendly_postgres psql -U lendly -d lendly_dev",
+    "db:verify": "docker exec lendly_postgres psql -U lendly -d lendly_dev -c \"SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;\""
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "pg":     "^8.12.0"
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "express-validator": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^8.0.1",
+    "pg": "^8.12.0"
   }
 }
