@@ -1,0 +1,33 @@
+# ── Dependencies ─────────────────────────
+node_modules/
+
+# ── Environment / secrets ─────────────────
+.env
+.env.*
+!.env.example
+
+# ── Build output ──────────────────────────
+dist/
+build/
+.next/
+out/
+
+# ── OS cruft ──────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor / IDE ──────────────────────────
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+
+# ── Logs ──────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+
+# ── Runtime ───────────────────────────────
+*.pid
+*.seed
