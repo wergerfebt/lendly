@@ -12,4 +12,5 @@ document.addEventListener('DOMContentLoaded', () => {
   updateToggleBtn();     // layout.js — set initial button label
   initResizeHandle();    // layout.js — wire up the drag handle
   initResizeObserver();  // layout.js — watch panel width for column changes
+  initFilters();         // filters.js — apply initial (empty) filter state
 });

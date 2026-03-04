@@ -55,12 +55,70 @@
   </header>
 
   <!-- ═══════════════════════════════════════
+       FILTER BAR
+  ═══════════════════════════════════════ -->
+  <div class="filter-bar" id="filterBar">
+    <div class="filter-bar-inner">
+
+      <!-- All Filters -->
+      <button class="filter-all-btn" onclick="openAllFilters()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="4" y1="6"  x2="20" y2="6"/>
+          <line x1="7" y1="12" x2="17" y2="12"/>
+          <line x1="10" y1="18" x2="14" y2="18"/>
+        </svg>
+        All filters
+        <span class="all-filters-badge" id="allFiltersBadge" style="display:none"></span>
+      </button>
+
+      <div class="filter-v-divider"></div>
+
+      <!-- Category -->
+      <button class="filter-pill" data-filter="category" onclick="toggleFilterDropdown('category', this)">
+        <span class="pill-label">Category</span>
+        <span class="pill-badge" style="display:none"></span>
+        <svg class="filter-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <!-- Delivery -->
+      <button class="filter-pill" data-filter="delivery" onclick="toggleFilterDropdown('delivery', this)">
+        <span class="pill-label">Delivery</span>
+        <span class="pill-badge" style="display:none"></span>
+        <svg class="filter-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <!-- Distance -->
+      <button class="filter-pill" data-filter="distance" onclick="toggleFilterDropdown('distance', this)">
+        <span class="pill-label">Distance</span>
+        <span class="pill-badge" style="display:none"></span>
+        <svg class="filter-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <!-- Price -->
+      <button class="filter-pill" data-filter="price" onclick="toggleFilterDropdown('price', this)">
+        <span class="pill-label">Price / day</span>
+        <span class="pill-badge" style="display:none"></span>
+        <svg class="filter-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
        MAIN LAYOUT
   ═══════════════════════════════════════ -->
   <div class="app-layout" id="appLayout">
 
     <div class="listings-panel" id="listingsPanel">
-      <div class="results-header"><strong>8 rentals</strong> near San Francisco</div>
+      <div class="results-header" id="resultsHeader"><strong>8 rentals</strong> near San Francisco</div>
       <div class="cards-grid" id="cardsContainer"></div>
     </div>
 
@@ -73,6 +131,147 @@
   </div>
 
   <!-- ═══════════════════════════════════════
+       FILTER DROPDOWNS  (position:fixed, placed by JS)
+  ═══════════════════════════════════════ -->
+
+  <!-- Category -->
+  <div class="filter-dropdown" id="dd-category">
+    <div class="dd-header">
+      <span class="dd-title">Category</span>
+      <button class="dd-clear" onclick="clearFilter('category')">Clear</button>
+    </div>
+    <div class="cat-grid">
+      <label class="cat-chip"><input type="checkbox" value="Home"         onchange="onCategoryChange(this)"><span>🏠</span>Home</label>
+      <label class="cat-chip"><input type="checkbox" value="Construction" onchange="onCategoryChange(this)"><span>🔧</span>Construction</label>
+      <label class="cat-chip"><input type="checkbox" value="Automotive"   onchange="onCategoryChange(this)"><span>🚗</span>Automotive</label>
+      <label class="cat-chip"><input type="checkbox" value="Photography"  onchange="onCategoryChange(this)"><span>📷</span>Photography</label>
+      <label class="cat-chip"><input type="checkbox" value="Audio"        onchange="onCategoryChange(this)"><span>🎵</span>Audio</label>
+      <label class="cat-chip"><input type="checkbox" value="Commercial AV" onchange="onCategoryChange(this)"><span>🎬</span>Commercial AV</label>
+      <label class="cat-chip"><input type="checkbox" value="Party & Event" onchange="onCategoryChange(this)"><span>🎉</span>Party & Event</label>
+    </div>
+  </div>
+
+  <!-- Delivery -->
+  <div class="filter-dropdown" id="dd-delivery">
+    <div class="dd-header">
+      <span class="dd-title">Delivery</span>
+      <button class="dd-clear" onclick="clearFilter('delivery')">Clear</button>
+    </div>
+    <div class="dd-options">
+      <label class="dd-option"><input type="radio" name="delivery" value="any"      onchange="onDeliveryChange(this)" checked><span>Any</span></label>
+      <label class="dd-option"><input type="radio" name="delivery" value="same-day" onchange="onDeliveryChange(this)"><span>⚡ Same Day Delivery</span></label>
+      <label class="dd-option"><input type="radio" name="delivery" value="next-day" onchange="onDeliveryChange(this)"><span>📦 Next Day Delivery</span></label>
+      <label class="dd-option"><input type="radio" name="delivery" value="pickup"   onchange="onDeliveryChange(this)"><span>🤝 Pickup Only</span></label>
+    </div>
+  </div>
+
+  <!-- Distance -->
+  <div class="filter-dropdown" id="dd-distance">
+    <div class="dd-header">
+      <span class="dd-title">Distance</span>
+      <button class="dd-clear" onclick="clearFilter('distance')">Clear</button>
+    </div>
+    <div class="dd-options">
+      <label class="dd-option"><input type="radio" name="distance" value="any" onchange="onDistanceChange(this)" checked><span>Any distance</span></label>
+      <label class="dd-option"><input type="radio" name="distance" value="2"   onchange="onDistanceChange(this)"><span>Within 2 miles</span></label>
+      <label class="dd-option"><input type="radio" name="distance" value="5"   onchange="onDistanceChange(this)"><span>Within 5 miles</span></label>
+      <label class="dd-option"><input type="radio" name="distance" value="10"  onchange="onDistanceChange(this)"><span>Within 10 miles</span></label>
+      <label class="dd-option"><input type="radio" name="distance" value="25"  onchange="onDistanceChange(this)"><span>Within 25 miles</span></label>
+    </div>
+  </div>
+
+  <!-- Price -->
+  <div class="filter-dropdown" id="dd-price">
+    <div class="dd-header">
+      <span class="dd-title">Price per day</span>
+      <button class="dd-clear" onclick="clearFilter('price')">Clear</button>
+    </div>
+    <div class="dd-options">
+      <label class="dd-option"><input type="radio" name="price" value="any"      onchange="onPriceChange(this)" checked><span>Any price</span></label>
+      <label class="dd-option"><input type="radio" name="price" value="under25"  onchange="onPriceChange(this)"><span>Under $25 / day</span></label>
+      <label class="dd-option"><input type="radio" name="price" value="25-50"    onchange="onPriceChange(this)"><span>$25 – $50 / day</span></label>
+      <label class="dd-option"><input type="radio" name="price" value="50-100"   onchange="onPriceChange(this)"><span>$50 – $100 / day</span></label>
+      <label class="dd-option"><input type="radio" name="price" value="over100"  onchange="onPriceChange(this)"><span>$100+ / day</span></label>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       ALL FILTERS MODAL
+  ═══════════════════════════════════════ -->
+  <div class="af-overlay" id="allFiltersOverlay" onclick="handleOverlayClick(event)">
+    <div class="af-panel" onclick="event.stopPropagation()">
+
+      <div class="af-header">
+        <button class="af-close" onclick="closeAllFilters()" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+        <span class="af-title">All Filters</span>
+        <button class="af-clear-all" onclick="clearAllFilters()">Clear all</button>
+      </div>
+
+      <div class="af-body">
+
+        <div class="af-section">
+          <div class="af-section-title">Category</div>
+          <div class="cat-grid">
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Home"         onchange="onCategoryChange(this)"><span>🏠</span>Home</label>
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Construction" onchange="onCategoryChange(this)"><span>🔧</span>Construction</label>
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Automotive"   onchange="onCategoryChange(this)"><span>🚗</span>Automotive</label>
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Photography"  onchange="onCategoryChange(this)"><span>📷</span>Photography</label>
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Audio"        onchange="onCategoryChange(this)"><span>🎵</span>Audio</label>
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Commercial AV" onchange="onCategoryChange(this)"><span>🎬</span>Commercial AV</label>
+            <label class="cat-chip"><input type="checkbox" data-af="category" value="Party & Event" onchange="onCategoryChange(this)"><span>🎉</span>Party & Event</label>
+          </div>
+        </div>
+
+        <div class="af-divider"></div>
+
+        <div class="af-row">
+          <div class="af-section">
+            <div class="af-section-title">Delivery</div>
+            <div class="dd-options">
+              <label class="dd-option"><input type="radio" name="af-delivery" data-af="delivery" value="any"      onchange="onDeliveryChange(this)" checked><span>Any</span></label>
+              <label class="dd-option"><input type="radio" name="af-delivery" data-af="delivery" value="same-day" onchange="onDeliveryChange(this)"><span>⚡ Same Day Delivery</span></label>
+              <label class="dd-option"><input type="radio" name="af-delivery" data-af="delivery" value="next-day" onchange="onDeliveryChange(this)"><span>📦 Next Day Delivery</span></label>
+              <label class="dd-option"><input type="radio" name="af-delivery" data-af="delivery" value="pickup"   onchange="onDeliveryChange(this)"><span>🤝 Pickup Only</span></label>
+            </div>
+          </div>
+
+          <div class="af-section">
+            <div class="af-section-title">Distance</div>
+            <div class="dd-options">
+              <label class="dd-option"><input type="radio" name="af-distance" data-af="distance" value="any" onchange="onDistanceChange(this)" checked><span>Any distance</span></label>
+              <label class="dd-option"><input type="radio" name="af-distance" data-af="distance" value="2"   onchange="onDistanceChange(this)"><span>Within 2 miles</span></label>
+              <label class="dd-option"><input type="radio" name="af-distance" data-af="distance" value="5"   onchange="onDistanceChange(this)"><span>Within 5 miles</span></label>
+              <label class="dd-option"><input type="radio" name="af-distance" data-af="distance" value="10"  onchange="onDistanceChange(this)"><span>Within 10 miles</span></label>
+              <label class="dd-option"><input type="radio" name="af-distance" data-af="distance" value="25"  onchange="onDistanceChange(this)"><span>Within 25 miles</span></label>
+            </div>
+          </div>
+
+          <div class="af-section">
+            <div class="af-section-title">Price per day</div>
+            <div class="dd-options">
+              <label class="dd-option"><input type="radio" name="af-price" data-af="price" value="any"     onchange="onPriceChange(this)" checked><span>Any price</span></label>
+              <label class="dd-option"><input type="radio" name="af-price" data-af="price" value="under25" onchange="onPriceChange(this)"><span>Under $25 / day</span></label>
+              <label class="dd-option"><input type="radio" name="af-price" data-af="price" value="25-50"   onchange="onPriceChange(this)"><span>$25 – $50 / day</span></label>
+              <label class="dd-option"><input type="radio" name="af-price" data-af="price" value="50-100"  onchange="onPriceChange(this)"><span>$50 – $100 / day</span></label>
+              <label class="dd-option"><input type="radio" name="af-price" data-af="price" value="over100" onchange="onPriceChange(this)"><span>$100+ / day</span></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="af-footer">
+        <button class="af-apply-btn" id="afApplyBtn" onclick="closeAllFilters()">Show 8 results</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
        SCRIPTS
        Load order matters — each file depends on the ones above it.
   ═══════════════════════════════════════ -->
@@ -80,6 +279,7 @@
   <script src="js/cards.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/filters.js"></script>
   <script src="js/app.js"></script>
 
   <!--
